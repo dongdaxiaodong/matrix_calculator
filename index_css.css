@@ -1,0 +1,41 @@
+body{
+    background-color: #363636;
+}
+h2{
+    color: white;
+    font-family: Sylfaen;
+    margin-left: 37%;
+    font-size:40px;
+}
+.btn_mul{
+    margin-right: 15%;
+    margin-top: 20%;
+}
+.intro_div{
+    color: white;
+    margin-bottom: 2%;
+}
+.intro_textarea{
+    color: black;
+}
+#textarea_inverse_font{
+    font-size: larger;
+    margin-bottom: 10%;
+}
+.ans_div{
+    margin-left: 10%;
+}
+.que_div{
+    margin-bottom: 4%;
+}
+.matrix_button{
+    width: 40%;
+    color: white;
+    margin-top: 1%;
+    margin-left: 8%;
+    margin-bottom: 6%;
+
+}
+.matrix_index_leftdiv{
+    background-color: black;
+}

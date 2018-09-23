@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<link>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link href="https://cdn.bootcss.com/bootstrap-select/1.12.4/css/bootstrap-select.min.css" rel="stylesheet">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="index_css.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 id="matrix_index_h2">
+                matrix calculator
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-3" id="matrix_index_leftdiv">
+                <div class="matrix_index_leftbuttondiv">
+                    <button type="button" id="matrix_mul" class="matrix_button btn btn-primary">两矩阵相乘</button>
+                </div>
+                <div class="matrix_index_leftbuttondiv">
+                    <button type="button" id="matrix_det" class="matrix_button btn btn-primary">求矩阵行列式</button>
+                </div>
+
+                <div class="matrix_index_leftbuttondiv">
+                    <button type="button" id="matrix_equation" class="matrix_button btn btn-primary">求线性方程组</button>
+                </div>
+                <div class="matrix_index_leftbuttondiv">
+                    <button type="button" id="matrix_inverse" class="matrix_button btn btn-primary">求逆矩阵</button>
+                </div>
+                <div class="matrix_index_leftbuttondiv">
+                    <button type="button" id="matrix_character" class="matrix_button btn btn-primary">求特征值</button>
+                </div>
+                <div class="matrix_index_leftbuttondiv">
+                    <button type="button" id="matrix_triangular" class="matrix_button btn btn-primary">求三角矩阵</button>
+                </div>
+                <div class="matrix_index_leftbuttondiv">
+                    <button type="button" id="matrix_feature" class="matrix_button btn btn-primary">求特征向量</button>
+                </div>
+
+            </div>
+            <div class="col-md-6" id="matrix_index_contentdiv">
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/template" id="matrix_mul_temp">
+    <div class="row">
+    <div class="intro_div col-md-12">
+        <label class="intro_label">矩阵乘法</label>
+        <p>例如，如果你想计算第一个矩阵第一行分别为1,5。第二行为2,3.第二个矩阵第一行分别为2,4。第二行分别是7,2的矩阵相乘</p>
+        <label>可以输入如右侧示例内容</label><textarea readonly="readonly" class="intro_textarea" rows="3" cols="4">1,2 &#13 3,2</textarea>
+        <textarea readonly="readonly" class="intro_textarea" rows="3" cols="4">2,4 &#13 7,2</textarea>
+    </div>
+    <div class="que_div col-md-12">
+        <div class="col-md-3">
+    <span class="label label-primary">在下方输入框中填入第一个矩阵</span><br>
+    <textarea rows="6" cols="18" id="textarea_mul_first"></textarea>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-success btn_mul" onclick="handle_mat_data.handle_mul()">矩阵乘法计算</button>
+        </div>
+        <div class="col-md-3">
+            <span class="label label-primary">在下方输入框中填入第二个矩阵</span><br>
+
+    <textarea rows="6" cols="18" id="textarea_mul_second"></textarea><br>
+        </div>
+    </div>
+        <div class="row">
+    <div class="ans_div col-md-12" hidden="hidden" style="margin-left: 23%">
+        <span class="label label-success">计算结果: </span><br>
+        <textarea id="textarea_mul_ans" readonly="readonly" rows="6" cols="18"></textarea>
+    </div></div>
+    </div>
+    </script>
+<script type="text/html" id="matrix_det_temp">
+    <div class="row">
+        <div class="col-md-12 intro_div">
+            <label>矩阵行列式</label>
+            <p>例如,如果你想计算一个二阶方阵的行列式，第一行为1和3.第二行为4和5</p>
+            <label>可以输入如右边格式</label><textarea readonly="readonly" class="intro_textarea" rows="3" cols="4">1,3 &#13 4,5</textarea>
+
+        </div>
+    <div class="que_div col-md-12">
+        <span class="label label-info">在右边方输入框中输入矩阵</span>
+        <textarea rows="6" cols=18" id="textarea_det"></textarea>
+        <button class="btn btn-primary" type="button" onclick="handle_mat_data.handle_det()">矩阵行列式计算</button>
+    </div>
+    <div class="ans_div" hidden="hidden">
+        <label class="label label-success">结果是</label>
+        <input type="text" readonly="readonly" id="textarea_det_ans">
+    </div>    </div>
+
+</script>
+
+<script type="text/html" id="matrix_equation_temp">
+    <div class="row">
+        <div class="col-md-12 intro_div">
+            <label>求线性方程组</label><br>
+            <p>例如，如果你想得到3x+2y=0,4x+3y=1的解</p>
+            <label>可以分别输入</label><textarea readonly="readonly" class="intro_textarea" rows="3" cols="4">3,2 &#13 4,3</textarea>
+            <label>以及</label><textarea readonly="readonly" class="intro_textarea" rows="3" cols="4">0 &#13 1</textarea>
+        </div>
+    <div class="que_div col-md-12">
+        <div class="row">
+            <div class="col-md-4" style="margin-right: 10%">
+        <span class="label label-info">在下方输入框中输入求解的方程组的系数矩阵</span>        <br>
+        <textarea rows="6" cols="18" id="textarea_equa_left"></textarea>
+            </div>
+
+            <div class="col-md-4">
+        <span class="label label-info">在下方输入框中输入对应的右边向量</span><br>
+        <textarea rows="6" cols="18" id="textarea_equa_right"></textarea>
+        </div></div></div>
+        <div style="margin-left: 10%;margin-bottom: 5%">        <button type="button" class="btn btn-default" onclick="handle_mat_data.handle_equa()">计算线性方程组</button>
+        </div>
+    <div class="ans_div" hidden="hidden">
+        <span class="label label-success">计算结果为:</span>
+        <input type="text" readonly="readonly" id="textarea_equa_ans">
+    </div>
+    </div>
+
+</script>
+<script type="text/html" id="matrix_inverse_temp">
+    <div class="row">
+        <div class="col-md-12 intro_div">
+            <label>求逆矩阵</label>
+            <p>例如:你想求第一行为1,2.第二行为3,5的矩阵的逆矩阵，可以在输入框中输入</p>
+            <textarea readonly="readonly" class="intro_textarea" rows="3" cols="4">1,2 &#13 3,5</textarea>
+        </div>
+    </div>
+    <div class="que_div">
+        <span class="label label-info">在下方输入框中输入矩阵</span><br>
+        <textarea rows="6" cols="18" id="textarea_inverse_only"></textarea>
+        <button type="button" class="btn btn-warning" onclick="handle_mat_data.handle_inverse()">求逆矩阵</button>
+    </div>
+    <div class="ans_div" hidden="hidden">
+        <span class="label label-warning">计算结果为:</span>
+        <label id="textarea_inverse_font" style="color: white"></label>
+        <textarea rows="6" cols="18" readonly="readonly" id="textarea_inverse_ans"></textarea>
+    </div>
+</script>
+<script type="text/html" id="matrix_character_temp">
+    <div class="row">
+        <div class="col-md-12 intro_div">
+            <label>求矩阵特征值</label>
+            <p>在指定输入框中将矩阵规范填写即可</p>
+            <p>例如：求第一行为1,4。第二行为2,5的矩阵特征值。输入如下所示</p>
+            <textarea readonly="readonly" class="intro_textarea" rows="3" cols="4">1,4 &nbsp 2,5</textarea>
+        </div>
+    </div>
+    <div class="que_div">
+        <span class="label label-info">在下方输入框中输入矩阵</span><br>
+        <textarea rows="6" cols="18" id="textarea_character_only"></textarea>
+        <button type="button" class="btn btn-danger" onclick="handle_mat_data.handle_character()">求矩阵的特征值</button>
+    </div>
+    <div class="ans_div" hidden="hidden">
+        <span class="label label-info">计算结果是:</span>
+        <input type="text" id="textarea_character_ans" readonly="readonly">
+    </div>
+</script>
+<script type="text/html" id="matrix_triangular_temp"></script>
+<script type="text/html" id="matrix_feature_temp"></script>
+<script type="text/javascript">
+    //获取所有mat_buttons
+    let matrix_buttons=document.getElementsByClassName("matrix_button")
+    //为but  set 不同的onclick函数  let牛B
+    for(let i=0;i<matrix_buttons.length;i+=1){
+        matrix_buttons[i].onclick=function () {
+            matrix_but_tem(this)
+        }
+    }
+    function matrix_but_tem(that){
+        const button_name=that.innerText
+        let div_content=document.getElementById("matrix_index_contentdiv")
+        if(button_name==="两矩阵相乘"){
+            div_content.innerHTML=document.getElementById("matrix_mul_temp").innerHTML
+        }
+        else if(button_name==="求矩阵行列式"){
+            div_content.innerHTML=document.getElementById("matrix_det_temp").innerHTML
+        }
+        else if(button_name==="求线性方程组"){
+            div_content.innerHTML=document.getElementById("matrix_equation_temp").innerHTML
+        }
+        else if(button_name==="求逆矩阵"){
+            div_content.innerHTML=document.getElementById("matrix_inverse_temp").innerHTML
+        }
+        else if(button_name==="求特征值"){
+            div_content.innerHTML=document.getElementById("matrix_character_temp").innerHTML
+        }
+    }
+    class handle_data{
+        handle_mul(){
+            let font_mat_1=document.getElementById("textarea_mul_first").value
+            let font_mat_2=this.handle_sorted_mat(font_mat_1)
+            let back_mat_1=document.getElementById("textarea_mul_second").value
+            let back_mat_2=this.handle_sorted_mat(back_mat_1)
+            let result_mat=cal_mat_obj.matrix_mul(font_mat_2,back_mat_2)
+            document.getElementsByClassName("ans_div")[0].hidden=null;
+            let result_str=""
+            for(let i=0;i<result_mat.length;i+=1){
+                for(let k=0;k<result_mat[i].length;k+=1){
+                    result_str+=result_mat[i][k]
+                    if(k!==result_mat.length-1){
+                        result_str+=","
+                    }
+                }
+                result_str+="\n"
+            }
+            document.getElementById("textarea_mul_ans").value=result_str
+        }
+        handle_det(){
+            let det_mat_1=document.getElementById("textarea_det").value
+            let det_mat_2=this.handle_sorted_mat(det_mat_1)
+
+            let result_num=cal_mat_obj.matrix_det(det_mat_2)
+            console.log(result_num)
+            document.getElementsByClassName("ans_div")[0].hidden=null
+            document.getElementById("textarea_det_ans").value=""+result_num
+        }
+        handle_inverse(){
+            let inverse_mat_1=document.getElementById("textarea_inverse_only").value
+            let inverse_mat_2=this.handle_sorted_mat(inverse_mat_1)
+            let result_mat=cal_mat_obj.matrix_inverse(inverse_mat_2)
+            let result=[result_mat[0],this.handle_fix_mat(result_mat[1])]
+            document.getElementsByClassName("ans_div")[0].hidden=null
+            console.log(result[0])
+            console.log(result[1])
+            document.getElementById("textarea_inverse_font").innerText=result[0]+"*"
+            document.getElementById("textarea_inverse_ans").value=result[1]
+        }
+        handle_character(){
+            let character_mat_1=document.getElementById("textarea_character_only").value
+            let character_mat_2=this.handle_sorted_mat(character_mat_1)
+            let result_mat=cal_mat_obj.matrix_character(character_mat_2)
+            console.log(result_mat)
+            document.getElementsByClassName("ans_div")[0].hidden=null;
+            if(result_mat.length===1){
+                if(result_mat[0]==="no"){
+                    document.getElementById("textarea_charcter_ans").value="没有特征值"
+                }
+                document.getElementById("textarea_character_ans").value="有一个特征值，它是"+result_mat[0]
+            }
+            else{
+                document.getElementById("textarea_character_ans").value="有两个特征值,分别是"+result_mat[0]+"和"+result_mat[1]
+            }
+        }
+        handle_equa(){
+            let left_mat_1=document.getElementById("textarea_equa_left").value
+            let left_mat_2=this.handle_sorted_mat(left_mat_1)
+            let right_mat_1=document.getElementById("textarea_equa_right").value.split("\n")
+            for(let i=0;i<right_mat_1.length;i+=1){
+                right_mat_1[i]=Number(right_mat_1[i])
+            }
+            let result_mat=cal_mat_obj.matrix_equation(left_mat_2,right_mat_1)
+            document.getElementsByClassName("ans_div")[0].hidden=null
+            document.getElementById("textarea_equa_ans").value=result_mat
+        }
+        handle_fix_mat(key_mat){
+            let key_value=""
+            for(let i=0;i<key_mat.length;i+=1){
+                for(let k=0;k<key_mat[i].length;k+=1){
+                    key_value+=key_mat[i][k]
+                    if(k!==key_mat[i].length-1){
+                        key_value+=","
+                    }
+                }
+                key_value+="\n"
+            }
+            return key_value
+        }
+        handle_sorted_mat(key_value){
+            let key_value1=""
+            for(let i=0;i<key_value.length;i+=1){
+                if(key_value[i] !== " "){
+                    key_value1+=key_value[i]
+                }
+            }
+            console.log(key_value1)
+            let key_mat_1=key_value1.split("\n")
+            let key_mat_2=[]
+            for(let i=0;i<key_mat_1.length;i+=1){
+                key_mat_2.push(key_mat_1[i].split(","))
+            }
+            for(let i=0;i<key_mat_2.length;i+=1){
+                for(let k=0;k<key_mat_2[i].length;k+=1){
+                    key_mat_2[i][k]=Number(key_mat_2[i][k])
+                }
+            }
+            console.log(key_mat_2)
+            return key_mat_2
+        }
+    }
+
+
+    class calculate_matrix {
+        matrix_buildArray(row_num, column_num) {
+            let big_array = []
+            for (let i = 0; i < row_num; i += 1) {
+                big_array[i] = []
+                for (let k = 0; k < column_num; k += 1) {
+                    big_array[i][k] = 0
+                }
+            }
+            return big_array
+        }
+
+        matrix_mul(font_mat, back_mat) {
+            const add_times = font_mat[0].length;
+            const row_num = font_mat.length;
+            const column_num = back_mat[0].length
+            let big_array = this.matrix_buildArray(row_num, column_num)
+            for (let i = 0; i < big_array.length; i += 1) {
+                for (let k = 0; k < big_array[i].length; k += 1) {
+                    let cout = 0
+                    for (let m = 0; m < add_times; m += 1) {
+                        cout = cout + (font_mat[i][m] * back_mat[m][k])
+                    }
+                    big_array[i][k] = cout
+                }
+            }
+            return big_array
+        }
+
+        matrix_det(mat) {
+            const change_times = mat.length
+            if (change_times === 2) {
+                return mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0]
+            }
+            else {
+                let add_cout = 0
+                let mul_add_array = this.matrix_buildArray(change_times, change_times)
+                for (let i = 0; i < change_times; i += 1) {
+                    for (let k = 0; k < change_times; k += 1) {
+                        mul_add_array[i][k] = (((i + k) >= change_times) ? mat[k][(i + k - change_times)] : mat[k][i + k])
+                    }
+                }
+                for (let i = 0; i < mul_add_array.length; i += 1) {
+                    let mul_cout = 1
+                    for (let k = 0; k < mul_add_array[i].length; k += 1) {
+                        mul_cout *= mul_add_array[i][k]
+                    }
+                    add_cout += mul_cout
+                }
+                let sub_cout = 0
+                let mul_sub_array = this.matrix_buildArray(change_times, change_times)
+                for (let i = 0; i < change_times; i += 1) {
+                    for (let k = 0; k < change_times; k += 1) {
+                        mul_sub_array[i][k] = (((i + k) >= change_times) ? mat[k][(2 * change_times - (i + k) - 1)] : mat[k][change_times - (i + k) - 1])
+                    }
+                }
+                for (let i = 0; i < mul_sub_array.length; i += 1) {
+                    let mul_cout = 1
+                    for (let k = 0; k < mul_sub_array[i].length; k += 1) {
+                        mul_cout *= mul_sub_array[i][k]
+                    }
+                    sub_cout += mul_cout
+                }
+                return add_cout - sub_cout
+            }
+        }
+
+        matrix_dividemat(mat) {
+            const mat_length = mat.length
+            let divide_num = 0
+            for (let i = 1; i <= parseInt(mat_length / 2); i += 1) {
+                if (i * i === mat_length) {
+                    divide_num = i
+                    break
+                }
+            }
+            let new_mat = this.matrix_buildArray(divide_num, divide_num)
+            for (let i = 0; i < divide_num; i += 1) {
+                for (let k = 0; k < divide_num; k += 1) {
+                    new_mat[i][k] = mat[i * divide_num + k]
+                }
+            }
+            return new_mat
+        }
+
+        matrix_inverse(mat) {
+            const mat_det = this.matrix_det(mat)
+            console.log(mat_det)
+            const mat_det_inverse = "1/" + mat_det
+            console.log(mat_det_inverse)
+            const mat_length = mat.length
+            if (mat_length === 2) {
+                let new_mat = [[0, 0], [0, 0]]
+                const old_0_0 = mat[0][0]
+                const old_1_1 = mat[1][1]
+                const old_0_1 = mat[0][1]
+                const old_1_0 = mat[1][0]
+                new_mat[0][0] = old_1_1
+                new_mat[1][1] = old_0_0
+                new_mat[0][1] = -1 * old_0_1
+                new_mat[1][0] = -1 * old_1_0
+                console.log([mat_det_inverse, new_mat])
+                return [mat_det_inverse, new_mat]
+            }
+            else {
+                let new_mat_1 = this.matrix_buildArray(mat_length, mat_length)
+                let new_mat_2 = this.matrix_buildArray(mat_length, mat_length)
+                for (let i = 0; i < mat_length; i += 1) {
+                    for (let k = 0; k < mat_length; k += 1) {
+                        let mini_mat = []
+                        for (let m = 0; m < mat_length; m += 1) {
+                            for (let n = 0; n < mat_length; n += 1) {
+                                if (m !== i && n !== k) {
+                                    mini_mat.push(mat[m][n])
+                                }
+                            }
+                        }
+                        let divide_mat = this.matrix_dividemat(mini_mat)
+                        let det_1 = this.matrix_det(divide_mat);
+                        let det_2 = ((i + k) % 2 === 0) ? det_1 : -1 * det_1
+                        new_mat_1[i][k] = det_2
+                    }
+                }
+                for (let i = 0; i < mat_length; i += 1) {
+                    for (let k = 0; k < mat_length; k += 1) {
+                        new_mat_2[i][k] = new_mat_1[k][i]
+                    }
+                }
+                console.log(new_mat_2)
+                return [mat_det_inverse, new_mat_2]
+            }
+        }
+
+        matrix_character(mat) {
+            const row_length = mat.length;
+            const column_length = mat[0].length
+            if (row_length === 2) {
+                const x_a = 1
+                const x_b = -1 * (mat[0][0] + mat[1][1])
+                const x_c = mat[0][0] * mat[1][1]
+                if((x_b*x_b-4*x_a*x_c)<0){
+                    return ["no"]
+                }
+                const x_1 = (-1 * x_b + Math.sqrt(x_b * x_b - 4 * x_a * x_c)) / 2 * x_a
+                const x_2 = (-1 * x_b - Math.sqrt(x_b * x_b - 4 * x_a * x_c)) / 2 * x_a
+                return (x_1 === x_2) ? [x_1] : [x_1, x_2]
+            }
+            else {
+                const x_a = -1
+                const x_b = (mat[0][0] + mat[1][1] + mat[2][2])
+                const x_c = -1 * (mat[0][0] * mat[1][1]) - (mat[0][0] + mat[1][1]) * mat[2][2] + mat[0][2] * mat[2][0] + mat[0][1] * mat[1][0] + mat[1][2] * mat[2][1]
+                const x_d = (mat[0][0] * mat[1][1] * mat[2][2]) + (mat[0][1] * mat[1][2] * mat[2][0]) + (mat[1][0] * mat[2][1] * mat[0][2]) - (mat[0][2] * (mat[1][1]) * mat[2][0] + (mat[0][0]) * mat[2][1] * mat[1][2] + mat[0][1] * mat[1][0] * (mat[2][2]))
+                const x_A = x_b * x_b - 3 * x_a * x_c
+                const x_B = x_b * x_c - 9 * x_a * x_d
+                const x_C = x_c * x_c - 3 * x_b * x_d
+                const x_all = x_B * x_B - 4 * x_A * x_C
+                if (x_A === x_B) {
+                    return [-1 * x_b / 3 * x_a]
+                }
+                else if (x_all === 0) {
+                    const result_1 = -1 * x_b / x_a + x_B / x_A
+                    const result_2_3 = -1 * x_B / (2 * x_A)
+                    return [result_1, result_2_3]
+                }
+                else {
+                    return []
+                }
+            }
+        }
+
+        matrix_equation(font_mat,back_mat){
+
+            let final_mat=[]
+
+            while(back_mat.length>1){
+                final_mat.push([font_mat[0],back_mat[0]])
+                let font_new_mat=[]
+                let back_new_mat=[]
+                for(let i=1;i<font_mat.length;i+=1){
+                    let result_mat=this.matrix_comMul([font_mat[0],back_mat[0]],[font_mat[i],back_mat[i]])
+                    font_new_mat.push(result_mat[0])
+                    back_new_mat.push(result_mat[1])
+                }
+                font_mat=font_new_mat
+                back_mat=back_new_mat
+            }
+
+            final_mat.reverse()
+            let answer_mat=[]
+            answer_mat.push((font_mat[0][0]===0)?1:back_mat[0]/font_mat[0][0])
+            for(let i=0;i<final_mat.length;i+=1){
+                let all_cout=0
+                for(let k=0;k<final_mat[i][0].length-1;k+=1){
+                    all_cout+=answer_mat[k]*final_mat[i][0][k]
+                }
+                answer_mat.push((final_mat[i][1]-all_cout)/final_mat[i][0][final_mat[i][0].length-1])
+            }
+            console.log(answer_mat)
+            return answer_mat
+
+
+        }
+        matrix_comMul(font_mat,back_mat){
+
+            let font_key_num=font_mat[1];
+            let back_key_num=back_mat[1];
+            let font_spe_num=font_mat[0][font_mat[0].length-1];
+            let back_spe_num=back_mat[0][back_mat[0].length-1];
+
+            let small_num=font_spe_num>back_spe_num?back_spe_num:font_spe_num;
+            let com_mul_num=null;
+            for(let i=small_num;i<=font_spe_num*back_spe_num;i+=0.5){
+                if(i%font_spe_num===0 && i%back_spe_num===0){
+                    com_mul_num=i;
+                    break
+                }
+            }
+            let result_mat=[[]];
+            for(let i=0;i<font_mat[0].length-1;i+=1){
+                let push_num=(com_mul_num/back_spe_num)*back_mat[0][i]-(com_mul_num/font_spe_num)*font_mat[0][i]
+                result_mat[0].push(push_num)
+            }
+            result_mat.push((com_mul_num/back_spe_num)*back_key_num-(com_mul_num/font_spe_num)*font_key_num)
+            return result_mat
+        }
+    }
+    let handle_mat_data=new handle_data()
+    let cal_mat_obj = new calculate_matrix()
+    console.log(cal_mat_obj.matrix_equation([[1,2,3],[2,1,1],[-1,1,1]],[6,3,0]))
+</script>
+</body>
+</html>
